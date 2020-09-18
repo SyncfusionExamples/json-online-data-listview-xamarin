@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ListViewXamarin"
+             xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
+             x:Class="ListViewXamarin.MainPage" Padding="{OnPlatform iOS='0,40,0,0'}">
+    <ContentPage.BindingContext>
+        <local:ListViewModel/>
+    </ContentPage.BindingContext>
+    
+	 <ContentPage.Content>
+        <StackLayout>
+            <Grid BackgroundColor="#2196F3" HeightRequest="40">
+                <Label Text="To Do Items" x:Name="headerLabel"  TextColor="White" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" />
+            </Grid>
+            <syncfusion:SfListView x:Name="listView" ItemSize="60" GroupHeaderSize="50" BackgroundColor="#FFE8E8EC" ItemsSource="{Binding Items}">
+                <syncfusion:SfListView.ItemTemplate >
+                    <DataTemplate>
+                        <Frame HasShadow="True" BackgroundColor="White" Padding="0">
+                            <Frame.InputTransparent>
+                                <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="False"/>
+                            </Frame.InputTransparent>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Padding="15,10,15,10">
+                                    <CheckBox IsChecked="{Binding [completed]}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Grid>
+                                <Label x:Name="textLabel" Text="{Binding [title]}" Grid.Column="1" FontSize="15" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Start" Margin="5,0,0,0" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </syncfusion:SfListView.ItemTemplate>
+                <syncfusion:SfListView.DataSource>
+                    <data:DataSource>
+                        <data:DataSource.GroupDescriptors>
+                            <data:GroupDescriptor PropertyName="userId"/>
+                        </data:DataSource.GroupDescriptors>
+                    </data:DataSource>
+                </syncfusion:SfListView.DataSource>
+                <syncfusion:SfListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.BackgroundColor>
+                                <OnPlatform x:TypeArguments="Color" Android="#eeeeee" iOS="#f7f7f7"/>
+                            </Grid.BackgroundColor>
+                            <Label FontSize="14" Text="{Binding Key, StringFormat='User ID: {0}'}" TextColor="#333333" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,0,0,0"/>
+                            <Label Grid.Column="1" HorizontalOptions="End" VerticalOptions="CenterAndExpand" Text="{Binding Count, StringFormat='Items count: {0}'}" Margin="0,0,15,0"/>
+                        </Grid>
+                    </DataTemplate>
+                </syncfusion:SfListView.GroupHeaderTemplate>
+            </syncfusion:SfListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
